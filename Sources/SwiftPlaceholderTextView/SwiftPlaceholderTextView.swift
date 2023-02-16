@@ -33,7 +33,14 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     /// TextView border color. Default: black
     public var borderColor: CGColor = UIColor.black.cgColor
     /// TextView placeholder text
-    public var placeholder: String?
+    public var placeholder: String? {
+        get {
+            return label.text
+        }
+        set {
+            label.text = newValue
+        }
+    }
     /// TextView placeholder font. Default: system font
     public var placeholderFont: UIFont? = .systemFont(ofSize: 16)
     /// TextView placeholder text color. Default: #CACACC
@@ -44,7 +51,12 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     public var textColor: UIColor? = .black
     /// TextView text
     public var text: String? {
-        return textView.text
+        get {
+            return textView.text
+        }
+        set {
+            textView.text = newValue
+        }
     }
     /// TextView return button
     public var returnKeyType: UIReturnKeyType = .default
@@ -54,12 +66,6 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     public var returnKeyShouldDismissKeyboard: Bool = true
     
     func setupView() {
-        layer.cornerRadius = cornerRadius
-        layer.borderWidth = borderWidth
-        layer.borderColor = borderColor
-        label.text = placeholder
-        label.font = placeholderFont
-        label.textColor = placeholderTextColor
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
@@ -67,11 +73,6 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
         label.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
         
         textView.delegate = self
-        textView.backgroundColor = .clear
-        textView.font = font
-        textView.textColor = textColor
-        textView.returnKeyType = returnKeyType
-        textView.keyboardType = keyboardType
         addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.leftAnchor.constraint(equalTo: leftAnchor, constant: 4).isActive = true
@@ -82,14 +83,30 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-    
-    public override func layoutSubviews() {
         setupView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        setupView()
+    }
+    
+    public override func layoutSubviews() {
+        layer.cornerRadius = cornerRadius
+        layer.borderWidth = borderWidth
+        layer.borderColor = borderColor
+        label.font = placeholderFont
+        label.textColor = placeholderTextColor
+        
+        textView.backgroundColor = .clear
+        textView.font = font
+        textView.textColor = textColor
+        textView.returnKeyType = returnKeyType
+        textView.keyboardType = keyboardType
+        
+        if text != nil {
+            label.isHidden = true
+        }
     }
     
     public func textViewDidChange(_ textView: UITextView) {
