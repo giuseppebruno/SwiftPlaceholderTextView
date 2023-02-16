@@ -104,7 +104,7 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
         textView.returnKeyType = returnKeyType
         textView.keyboardType = keyboardType
         
-        if text != nil {
+        if text != nil && text?.trimmingCharacters(in: .whitespaces).isEmpty == false {
             label.isHidden = true
         }
     }
