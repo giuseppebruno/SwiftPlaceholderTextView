@@ -23,8 +23,17 @@ import UIKit
 
 public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     
-    private let label = UILabel()
-    private lazy var textView = UITextView()
+    private let label: UILabel = {
+        let lbl = UILabel()
+        lbl.numberOfLines = 0
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    private lazy var textView: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     /// TextView corner radius. Default: 8
     public var cornerRadius: CGFloat = 8
@@ -67,14 +76,12 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     
     func setupView() {
         addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
         label.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
         
         textView.delegate = self
         addSubview(textView)
-        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.leftAnchor.constraint(equalTo: leftAnchor, constant: 4).isActive = true
         textView.topAnchor.constraint(equalTo: topAnchor, constant: 4).isActive = true
         textView.rightAnchor.constraint(equalTo: rightAnchor, constant: -4).isActive = true
