@@ -23,31 +23,34 @@ import UIKit
 
 public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     
-    private let label: UILabel = {
+    private let placeholderLbl: UILabel = {
         let lbl = UILabel()
         lbl.numberOfLines = 0
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
+    
     private lazy var textView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    /// TextView background color: Default: UIColor.black
+    public var textViewBackgroundColor: UIColor = .white
     /// TextView corner radius. Default: 8
     public var cornerRadius: CGFloat = 8
     /// TextView border width. Default: 1
     public var borderWidth: CGFloat = 1
-    /// TextView border color. Default: black
+    /// TextView border color. Default: UIColor.black
     public var borderColor: CGColor = UIColor.black.cgColor
     /// TextView placeholder text
     public var placeholder: String? {
         get {
-            return label.text
+            return placeholderLbl.text
         }
         set {
-            label.text = newValue
+            placeholderLbl.text = newValue
         }
     }
     /// TextView placeholder font. Default: system font
@@ -56,7 +59,7 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     public var placeholderTextColor: UIColor? = UIColor(red: 202/255, green: 202/255, blue: 204/255, alpha: 1)
     /// TextView text font. Default: system font
     public var font: UIFont? = .systemFont(ofSize: 16)
-    /// TextView text color. Default: black
+    /// TextView text color. Default: UIColor.black
     public var textColor: UIColor? = .black
     /// TextView text
     public var text: String? {
@@ -75,10 +78,10 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     public var returnKeyShouldDismissKeyboard: Bool = true
     
     func setupView() {
-        addSubview(label)
-        label.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
-        label.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
-        label.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
+        addSubview(placeholderLbl)
+        placeholderLbl.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
+        placeholderLbl.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
+        placeholderLbl.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
         
         textView.delegate = self
         addSubview(textView)
@@ -99,11 +102,12 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
     }
     
     public override func layoutSubviews() {
+        backgroundColor = textViewBackgroundColor
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor
-        label.font = placeholderFont
-        label.textColor = placeholderTextColor
+        placeholderLbl.font = placeholderFont
+        placeholderLbl.textColor = placeholderTextColor
         
         textView.backgroundColor = .clear
         textView.font = font
@@ -112,12 +116,12 @@ public class SwiftPlaceholderTextView: UIView, UITextViewDelegate {
         textView.keyboardType = keyboardType
         
         if text != nil && text?.trimmingCharacters(in: .whitespaces).isEmpty == false {
-            label.isHidden = true
+            placeholderLbl.isHidden = true
         }
     }
     
     public func textViewDidChange(_ textView: UITextView) {
-        label.isHidden = textView.text != ""
+        placeholderLbl.isHidden = textView.text != ""
     }
     
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
